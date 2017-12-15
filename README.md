@@ -5,7 +5,7 @@ Currently functionality is limited to just on Android
 
 ## Provide API
 
-###generateBoxKeypairs (async)
+### generateBoxKeypairs (async)
 input :-
 
 output :
@@ -18,7 +18,7 @@ output :
 * PublicKey string (hex)
 * SecretKey string (hex)
 
-###generateSignKeypairs (async)
+### generateSignKeypairs (async)
 input :-
 
 output :
@@ -31,7 +31,7 @@ output :
 * SigningKey string (hex)
 * VerifyKey string (hex)
 
-###encrypt (async)
+### encrypt (async)
 input : (msg, nonce, publicKey, secretKey)
 * msg string
 * nonce string
@@ -39,7 +39,7 @@ input : (msg, nonce, publicKey, secretKey)
 * secretkey string (hex)
 output : Cipher string
 
-###decrypt (async)
+### decrypt (async)
 input : (msg, nonce, publicKey, secretKey)
 * msg string
 * nonce string
@@ -47,13 +47,13 @@ input : (msg, nonce, publicKey, secretKey)
 * secretkey string (hex)
 output : message string
 
-###sign (async)
+### sign (async)
 input : (msg, secretKey)
 * msg string
 * secretkey string (hex)
 output : Signature string (hex)
 
-###verify
+### verify
 input : (signature, msg, secretKey)
 * signature string (hex)
 * msg string
