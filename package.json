@@ -1,0 +1,32 @@
+{
+  "name": "react-native-libsodium",
+  "version": "0.0.1",
+  "description": "libsodium wrapper for React Native",
+  "main": "index",
+  "scripts": {
+    "start": "node node_modules/react-native/local-cli/cli.js start",
+    "test": "jest"
+  },
+  "author": {
+    "name": "Pongpayak Boontaetae",
+    "email": "donus33@gmail.com"
+  },
+  "homepage": "https://github.com/donus3/react-native-libsodium",
+  "dependencies": {
+    "react": "16.0.0",
+    "react-native": "0.51.0"
+  },
+  "devDependencies": {
+    "babel-jest": "21.2.0",
+    "babel-preset-react-native": "4.0.0",
+    "jest": "21.2.1",
+    "react-test-renderer": "16.0.0"
+  },
+  "jest": {
+    "preset": "react-native"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/donus3/react-native-libsodium.git"
+  }
+}
