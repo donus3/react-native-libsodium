@@ -1,7 +1,57 @@
 # react-native-libsodium
 libsodium wrapper for React Native
 
-Currently functionality is limited to just on Android
+Mark : Currently support only Android.
+
+## Install
+
+```
+yarn add react-native-libsodium
+```
+
+```
+react-native link
+```
+
+
+## Android Config
+ * AndroidManifest.xml
+
+ ```
+<manifest
+    ...
+
+    xmlns:tools="http://schemas.android.com/tools"
+
+    ...>
+
+    <application
+
+        ...
+
+        tools:replace="android:allowBackup"
+
+        ...>
+
+        ...
+
+    </application>
+
+    ...
+
+</manifest>
+ ```
+
+* android/app/build.gradle
+
+```
+android {
+    compileSdkVersion 25
+    buildToolsVersion "25.0.3"
+...
+    defaultConfig {
+      targetSdkVersion 25
+```
 
 ## Provide API
 
