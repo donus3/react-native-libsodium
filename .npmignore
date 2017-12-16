@@ -4,8 +4,7 @@ yarn.lock
 
 .idea/
 node_modules/
-example/
-screenshots/
+examples/
 
 android/.idea/
 android/.gradle/
