@@ -1,7 +1,10 @@
 # react-native-libsodium
 libsodium wrapper for React Native
 
-Mark : Currently support only Android.
+ReMark : Currently support only Android because I don't have a Mac Pro or Macbook or whatever Mac (just Mac fish burger).
+
+## Contribute
+Just pull request!
 
 ## Install
 
@@ -54,64 +57,80 @@ android {
 ```
 
 ## Provide API
+all api using async
 
-### generateBoxKeypairs (async)
-input :-
+## randomebytes(length:int) return string
+//use to random generate nonce, seed, etc.
+* length : output length
+* return : randombytes in hex string format
 
-output :
-```
-{
-    PublicKey: PublicKey,
-    SecretKey: SecretKey
-}
-```
-* PublicKey string (hex)
-* SecretKey string (hex)
+### crypto_box_keypair() return { PublicKey: string, SecretKey: string }
+* return : box keypair in hex string format
 
-### generateSignKeypairs (async)
-input :-
+### crypto_box_seed_keypair(seed:string) return { PublicKey: string, SecretKey: string }
+* seed : seed size CRYPTO_BOX_SEEDBYTES
+* return : box keypair in hex string format
 
-output :
-```
-{
-    SigningKey: SigningKey,
-    VerifyKey: VerifyKey
-}
-```
-* SigningKey string (hex)
-* VerifyKey string (hex)
+### crypto_box_easy(msg :string, nonce :string, publicKey :string, secretKey :string) return string
+* msg : message
+* nonce : randome string size CRYPTO_BOX_NONCEBYTES
+* publickey : receiver's publickey in hex string format
+* secretkey : sender's secretkey in hex string format
+* return : cipher in hex string format
 
-### encrypt (async)
-input : (msg, nonce, publicKey, secretKey)
-* msg string
-* nonce string
-* publickey string (hex)
-* secretkey string (hex)
-output : Cipher string
+### (cipher :string, nonce :string, publicKey :string, secretKey :string) return string
+* msg : message
+* nonce : randome string size CRYPTO_BOX_NONCEBYTES
+* publickey : sender's publickey in hex string format
+* secretkey : receiver's secretkey in hex string format
+* return : original message
 
-### decrypt (async)
-input : (msg, nonce, publicKey, secretKey)
-* msg string
-* nonce string
-* publickey string (hex)
-* secretkey string (hex)
-output : message string
+### crypto_sign_keypair() return { SigningKey: string, VerifyKey: string }
+* return : ed25519 keypair in hex string format
 
-### sign (async)
-input : (msg, secretKey)
-* msg string
-* secretkey string (hex)
-output : Signature string (hex)
+### crypto_sign_seed_keypair(seed :string) return { SigningKey: string, VerifyKey: string }
+* seed : seed size CRYPTO_SIGN_SEEDBYTES
+* return : ed25519 keypair in hex string format
 
-### verify
-input : (signature, msg, secretKey)
-* signature string (hex)
-* msg string
-* secretKey string (hex)
-ouput: isValid boolen
+### crypto_sign(msg :string, secretKey :string) return string
+* msg : message
+* secretkey : signer's ed25519 secretkey in hex string format
+* return : ed25519 signed message (size msg.length + CRYPTO_SIGN_BYTES)
+
+### crypto_sign_open(signature :string, secretKey :string) return string
+* signature : ed25519 signed message
+* secretKey : signer's ed25519 secretkey in hex string format
+* return : original message
+
+### crypto_sign_detached(msg :string, secretKey :string) return string
+* msg : message
+* secretkey : signer's ed25519 secretkey in hex string format
+* return : ed25519 signature (size CRYPTO_SIGN_BYTES)
+
+## crypto_sign_verify_detached(msg :string, signature :string, secretKey :string) return boolean
+* msg : original message
+* signature : ed25519 signature
+* secretKey : signer's ed25519 secretkey in hex string format
+* return : signature validation
+
+### crypto_secretbox_easy(message :string, nonce :string, secretKey :string) return string
+* message : message
+* nonce : randome string size CRYPTO_SECRETBOX_NONCEBYTES
+* secretKey : secretKey
+* return : cipher
+
+### crypto_secretbox_open_easy(cipher :string, nonce :string, secretKey :string) return string
+* cipher : cipher from above api
+* nonce : randome string size CRYPTO_SECRETBOX_NONCEBYTES
+* secretKey : same as above api
+* return : original message for sure! 
+### crypto_auth(input :string, key :string) return string
+https://download.libsodium.org/doc/secret-key_cryptography/secret-key_authentication.html
+### crypto_auth_verify(mac :string, input :string, key :string) return boolean
+https://download.libsodium.org/doc/secret-key_cryptography/secret-key_authentication.html
 
 ## Next Step
 more libsodium api wrapper and support ios
 
 ## Credit
-libsodium-jni (https://github.com/joshjdevl/libsodium-jni)
+joshjdevl/libsodium-jni (https://github.com/joshjdevl/libsodium-jni)
