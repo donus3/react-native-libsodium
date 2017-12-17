@@ -3,8 +3,6 @@ package com.sodium;
 /**
  * Created by Donus on 12/13/2017.
  */
-import android.util.Base64;
-
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
@@ -12,10 +10,7 @@ import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.WritableMap;
 
-import org.libsodium.jni.SodiumConstants;
-import org.libsodium.jni.crypto.Util;
 import org.libsodium.jni.encoders.Encoder;
-import org.libsodium.jni.keys.KeyPair;
 import org.libsodium.jni.keys.SigningKey;
 import org.libsodium.jni.keys.VerifyKey;
 
@@ -23,7 +18,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static org.libsodium.jni.NaCl.sodium;
-import static org.libsodium.jni.SodiumConstants.BOXZERO_BYTES;
 
 public class SodiumModule extends ReactContextBaseJavaModule {
 
@@ -148,11 +142,12 @@ public class SodiumModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void crypto_sign_keypair(Promise promise){
-        SigningKey signingKey = new SigningKey();
-        VerifyKey verifyKey = signingKey.getVerifyKey();
+        byte[] bsigningKey = new byte[CRYPTO_SIGN_SECRETKEYBYTES];
+        byte[] bverifyKey = new byte[CRYPTO_SIGN_PUBLICKEYBYTES];
+        sodium().crypto_sign_keypair(bverifyKey, bsigningKey);
         WritableMap map = Arguments.createMap();
-        map.putString("SigningKey", signingKey.toString());
-        map.putString("VerifyKey", verifyKey.toString());
+        map.putString("SigningKey", toString(bsigningKey));
+        map.putString("VerifyKey", toString(bverifyKey));
         promise.resolve(map);
     }
 
@@ -185,13 +180,14 @@ public class SodiumModule extends ReactContextBaseJavaModule {
         byte[] unsigned_message = new byte[bsignature.length - CRYPTO_SIGN_BYTES];
         int[] bufferLen = new int[1];
         if (sodium().crypto_sign_open(unsigned_message, bufferLen, bsignature, bsignature.length, bverifyKey) != 0){
-            promise.resolve("Error, Cannot open the message. Please provide the right key or signed message.");
-        }
-        try{
-            String message = new String(unsigned_message, "UTF-8");
-            promise.resolve(message);
-        } catch(Exception e) {
-            promise.reject("Error :", e.getMessage());
+            promise.reject("Error","Cannot open the message. Please provide the right key or signed message.");
+        } else {
+            try{
+                String message = new String(unsigned_message, "UTF-8");
+                promise.resolve(message);
+            } catch(Exception e) {
+                promise.reject("Error :", e.getMessage());
+            }
         }
     }
 
@@ -201,8 +197,8 @@ public class SodiumModule extends ReactContextBaseJavaModule {
         byte[] bsigningKey = toByte(signingKey);
         byte[] signature = new byte[CRYPTO_SIGN_BYTES];
         int[] bufferLen = new int[1];
-        sodium().crypto_sign_ed25519_detached(signature, bufferLen, bmessage, bmessage.length, bsigningKey);
-        promise.resolve(signature);
+        sodium().crypto_sign_detached(signature, bufferLen, bmessage, bmessage.length, bsigningKey);
+        promise.resolve(toString(signature));
     }
 
     @ReactMethod
@@ -210,8 +206,11 @@ public class SodiumModule extends ReactContextBaseJavaModule {
         byte[] bmessage = message.getBytes();
         byte[] bverifyKey = toByte(verifyKey);
         byte[] bsignature = toByte(signature);
-        int valide = sodium().crypto_sign_verify_detached(bsignature, bmessage, bmessage.length, bverifyKey);
-        promise.resolve(valide);
+        if (sodium().crypto_sign_verify_detached(bsignature, bmessage, bmessage.length, bverifyKey) != 0) {
+            promise.resolve(false);
+        } else {
+            promise.resolve(true);
+        }
     }
 
     @ReactMethod

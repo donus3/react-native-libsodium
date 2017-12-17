@@ -56,6 +56,23 @@ android {
       targetSdkVersion 25
 ```
 
+## Example
+```
+(async() => {
+    let keybob = await Sodium.crypto_box_keypair()
+    let keyalice = await Sodium.crypto_box_keypair()
+    let nonce = await Sodium.randomebytes(Sodium.CRYPTO_SECRETBOX_NONCEBYTES)
+    let cipher = await Sodium.crypto_box_easy("I miss you Bob", nonce, keybob.PublicKey, keyalice.SecretKey)
+    Sodium.crypto_secretbox_open_easy(cipher, nonce, keyalice.PublicKey, keybob.SecretKey).then(console.log) // /(>///<)\
+
+    let keysig = await Sodium.crypto_sign_keypair()
+    let sig = await Sodium.crypto_sign_detached("My name is donus.", keysig.SigningKey)
+    Sodium.crypto_sign_verify_detached("My name is donus.", sig, keysig.VerifyKey).then(console.log)
+
+    let sign = await Sodium.crypto_sign("Are you sure you goona use this?", keysig.SigningKey)
+    Sodium.crypto_sign_open(sign, keysig.VerifyKey).then(console.log)
+})()
+```
 ## Provide API
 all api using async
 
