@@ -84,7 +84,7 @@ public class SodiumModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void randomebytes(int length, Promise promise) {
+    public void randombytes(int length, Promise promise) {
         byte[] buffer = new byte[length];
         sodium().randombytes(buffer, length);
         promise.resolve(toString(buffer));

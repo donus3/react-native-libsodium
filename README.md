@@ -61,7 +61,7 @@ android {
 (async() => {
     let keybob = await Sodium.crypto_box_keypair()
     let keyalice = await Sodium.crypto_box_keypair()
-    let nonce = await Sodium.randomebytes(Sodium.CRYPTO_SECRETBOX_NONCEBYTES)
+    let nonce = await Sodium.randombytes(Sodium.CRYPTO_SECRETBOX_NONCEBYTES)
     let cipher = await Sodium.crypto_box_easy("I miss you Bob", nonce, keybob.PublicKey, keyalice.SecretKey)
     Sodium.crypto_secretbox_open_easy(cipher, nonce, keyalice.PublicKey, keybob.SecretKey).then(console.log) // /(>///<)\
 
@@ -76,7 +76,7 @@ android {
 ## Provide API
 all api using async
 
-## randomebytes(length:int) return string
+## randombytes(length:int) return string
 //use to random generate nonce, seed, etc.
 * length : output length
 * return : randombytes in hex string format
