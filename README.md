@@ -61,9 +61,9 @@ android {
 (async() => {
     let keybob = await Sodium.crypto_box_keypair()
     let keyalice = await Sodium.crypto_box_keypair()
-    let nonce = await Sodium.randombytes(Sodium.CRYPTO_SECRETBOX_NONCEBYTES)
+    let nonce = await Sodium.randombytes(Sodium.CRYPTO_BOX_NONCEBYTES)
     let cipher = await Sodium.crypto_box_easy("I miss you Bob", nonce, keybob.PublicKey, keyalice.SecretKey)
-    Sodium.crypto_secretbox_open_easy(cipher, nonce, keyalice.PublicKey, keybob.SecretKey).then(console.log) // /(>///<)\
+    Sodium.crypto_box_open_easy(cipher, nonce, keyalice.PublicKey, keybob.SecretKey).then(console.log) // /(>///<)\
 
     let keysig = await Sodium.crypto_sign_keypair()
     let sig = await Sodium.crypto_sign_detached("My name is donus.", keysig.SigningKey)
@@ -140,7 +140,7 @@ all api using async
 * cipher : cipher from above api
 * nonce : randome string size CRYPTO_SECRETBOX_NONCEBYTES
 * secretKey : same as above api
-* return : original message for sure! 
+* return : original message for sure!
 ### crypto_auth(input :string, key :string) return string
 https://download.libsodium.org/doc/secret-key_cryptography/secret-key_authentication.html
 ### crypto_auth_verify(mac :string, input :string, key :string) return boolean
