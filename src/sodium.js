@@ -17,10 +17,10 @@ let SodiumAPI = {
     CRYPTO_AUTH_BYTES: Sodium.CRYPTO_AUTH_BYTES,
     CRYPTO_AUTH_KEYBYTES: Sodium.CRYPTO_AUTH_KEYBYTES,
     
-    randomebytes: async(length :int) :string => {
+    randombytes: async(length :int) :string => {
         try {
-            var randomebytes = await Sodium.randomebytes(length)
-            return randomebytes
+            var randombytes = await Sodium.randombytes(length)
+            return randombytes
         } catch (error) {
             return error
         }

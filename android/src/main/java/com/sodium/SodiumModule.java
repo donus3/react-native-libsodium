@@ -84,7 +84,7 @@ public class SodiumModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void randomebytes(int length, Promise promise) {
+    public void randombytes(int length, Promise promise) {
         byte[] buffer = new byte[length];
         sodium().randombytes(buffer, length);
         promise.resolve(toString(buffer));
@@ -118,7 +118,7 @@ public class SodiumModule extends ReactContextBaseJavaModule {
         byte[] bpublicKey = toByte(publicKey);
         byte[] bprivateKey = toByte(secretKey);
         byte[] bmessage = message.getBytes();
-        byte[] bnonce = nonce.getBytes();
+        byte[] bnonce = toByte(nonce);
         byte[] cipher = new byte[bmessage.length + CRYPTO_SECRETBOX_MACBYTES];
         sodium().crypto_box_easy(cipher, bmessage, bmessage.length, bnonce, bpublicKey, bprivateKey);
         promise.resolve(toString(cipher));
@@ -129,7 +129,7 @@ public class SodiumModule extends ReactContextBaseJavaModule {
         byte[] bpublicKey = toByte(publicKey);
         byte[] bprivateKey = toByte(secretKey);
         byte[] bciphertext = toByte(ciphertext);
-        byte[] bnonce = nonce.getBytes();
+        byte[] bnonce = toByte(nonce);
         byte[] decipher = new byte[bciphertext.length - CRYPTO_SECRETBOX_MACBYTES];
         sodium().crypto_box_open_easy(decipher, bciphertext, bciphertext.length, bnonce, bpublicKey, bprivateKey);
         try{
