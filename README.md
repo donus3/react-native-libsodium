@@ -1,3 +1,6 @@
+# ⚠️WARNING
+I have no longer maintain this library anymore. If you would like to find an alternative please look at [https://github.com/SerenityNotes/react-native-libsodium](https://github.com/SerenityNotes/react-native-libsodium).
+
 # react-native-libsodium
 libsodium wrapper for React Native
 
